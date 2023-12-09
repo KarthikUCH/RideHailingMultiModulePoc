@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.kvr.navigation.Navigator
+import com.kvr.payment_data.PaymentListener
+import com.kvr.payment_data.PaymentListenerHolder
 import com.kvr.taxi_data.IBookingManager
 import com.kvr.taxi_ui.ui.theme.RideHailingMultiModulePocTheme
 import org.koin.android.ext.android.inject
@@ -42,6 +44,7 @@ class CarRideActivity : ComponentActivity() {
     }
 
     private fun openPaymentActivity() {
+        PaymentListenerHolder.setListener(bookingManager as PaymentListener)
         Navigator.openPaymentActivity(this)
     }
 

@@ -14,15 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.kvr.payment_data.PaymentListener
+import com.kvr.payment_data.PaymentListenerHolder
 import com.kvr.payment_data.domain.Cash
 import com.kvr.payment_data.domain.CreditCard
 import com.kvr.payment_data.domain.Nets
 import com.kvr.payment_data.domain.Payment
 import com.kvr.payment_ui.ui.theme.RideHailingMultiModulePocTheme
-import org.koin.android.ext.android.inject
 
 class PaymentActivity : ComponentActivity() {
-    private val paymentListener: PaymentListener by inject()
+    private val paymentListener: PaymentListener? = PaymentListenerHolder.paymentListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,13 +39,18 @@ class PaymentActivity : ComponentActivity() {
     }
 
     private fun onPaymentSelected(payment: Payment) {
-        paymentListener.onPaymentSelected(payment)
+        paymentListener?.onPaymentSelected(payment)
         displayToastMsg()
     }
 
     private fun displayToastMsg() {
         Toast.makeText(this, "Check log to find the update in Booking Manager", Toast.LENGTH_LONG)
             .show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PaymentListenerHolder.clearListener()
     }
 }
 
