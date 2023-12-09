@@ -17,3 +17,5 @@ rootProject.name = "RideHailingMultiModulePoc"
 include(":app")
 include(":payment-data")
 include(":taxi-data")
+include(":payment-ui")
+include(":taxi-ui")
