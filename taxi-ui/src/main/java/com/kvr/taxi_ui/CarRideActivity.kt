@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.kvr.navigation.Navigator
 import com.kvr.taxi_data.IBookingManager
 import com.kvr.taxi_ui.ui.theme.RideHailingMultiModulePocTheme
 import org.koin.android.ext.android.inject
@@ -38,12 +39,7 @@ class CarRideActivity : ComponentActivity() {
     }
 
     private fun openPaymentActivity() {
-        val intent = Intent()
-        intent.setClassName(
-            "com.kvr.ridehailingmultimodulepoc",
-            "com.kvr.payment_ui.PaymentActivity"
-        )
-        startActivity(intent)
+        Navigator.openPaymentActivity(this)
     }
 }
 
