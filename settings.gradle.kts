@@ -12,6 +12,14 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.vanniktech:gradle-dependency-graph-generator-plugin:0.8.0")
+    }
+}
 
 rootProject.name = "RideHailingMultiModulePoc"
 include(":app")
