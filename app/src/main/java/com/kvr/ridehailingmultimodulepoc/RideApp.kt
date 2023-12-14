@@ -2,6 +2,7 @@ package com.kvr.ridehailingmultimodulepoc
 
 import android.app.Application
 import com.kvr.payment_data.di.paymentDataModule
+import com.kvr.promo_data.di.promoDataModule
 import com.kvr.ridehailingmultimodulepoc.di.appListenerModule
 import com.kvr.taxi_ui.di.taxiUiModule
 import org.koin.android.ext.koin.androidContext
@@ -18,6 +19,7 @@ class RideApp : Application() {
                     appListenerModule,
                     taxiUiModule,
                     paymentDataModule,
+                    promoDataModule,
                 )
             )
         }

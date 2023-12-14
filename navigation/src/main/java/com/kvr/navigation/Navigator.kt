@@ -13,4 +13,13 @@ object Navigator {
         )
         context.startActivity(intent)
     }
+
+    fun openPromoActivity(context: Context) {
+        val intent = Intent()
+        intent.setClassName(
+            "com.kvr.ridehailingmultimodulepoc",
+            "com.kvr.promo_ui.PromoActivity"
+        )
+        context.startActivity(intent)
+    }
 }

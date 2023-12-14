@@ -1,11 +1,13 @@
-package com.kvr.payment_ui
+package com.kvr.promo_ui
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -13,16 +15,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.kvr.payment_data.PaymentListener
-import com.kvr.payment_data.domain.Cash
-import com.kvr.payment_data.domain.CreditCard
-import com.kvr.payment_data.domain.Nets
-import com.kvr.payment_data.domain.Payment
-import com.kvr.payment_ui.ui.theme.RideHailingMultiModulePocTheme
+import androidx.compose.ui.unit.dp
+import com.kvr.promo_data.PromoListener
+import com.kvr.promo_data.data.IPromoRepository
+import com.kvr.promo_data.domain.Promo
+import com.kvr.promo_ui.ui.theme.RideHailingMultiModulePocTheme
 import org.koin.android.ext.android.inject
 
-class PaymentActivity : ComponentActivity() {
-    private val paymentListener: PaymentListener by inject()
+class PromoActivity : ComponentActivity() {
+    private val promoListener: PromoListener by inject()
+    private val promoRepository: IPromoRepository by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -32,14 +35,24 @@ class PaymentActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Payment", onPaymentSelected = this::onPaymentSelected)
+                    Greeting(
+                        name = "Promo",
+                        promos = promoRepository.getPromoList(),
+                        onPromoSelected = this::onPromoSelected,
+                        onPromoRemoved = this::onPromoRemoved
+                    )
                 }
             }
         }
     }
 
-    private fun onPaymentSelected(payment: Payment) {
-        paymentListener.onPaymentSelected(payment)
+    private fun onPromoSelected(promo: Promo) {
+        promoListener.onPromoSelected(promo)
+        displayToastMsg()
+    }
+
+    private fun onPromoRemoved() {
+        promoListener.onPromoRemoved()
         displayToastMsg()
     }
 
@@ -52,8 +65,10 @@ class PaymentActivity : ComponentActivity() {
 @Composable
 fun Greeting(
     name: String,
+    promos: List<Promo>,
     modifier: Modifier = Modifier,
-    onPaymentSelected: (payment: Payment) -> Unit
+    onPromoSelected: (Promo) -> Unit,
+    onPromoRemoved: () -> Unit
 ) {
     Column {
         Text(
@@ -61,23 +76,32 @@ fun Greeting(
             modifier = modifier
         )
 
-        Button(onClick = { onPaymentSelected(Cash()) }) {
+        Button(onClick = { onPromoSelected(promos[0]) }) {
             Text(
-                text = "Select Cash",
+                text = "Promo: ${promos[0].code}",
                 modifier = modifier
             )
         }
 
-        Button(onClick = { onPaymentSelected(Nets()) }) {
+        Button(onClick = { onPromoSelected(promos[1]) }) {
             Text(
-                text = "Select Nets",
+                text = "Promo: ${promos[1].code}",
                 modifier = modifier
             )
         }
 
-        Button(onClick = { onPaymentSelected(CreditCard()) }) {
+        Button(onClick = { onPromoSelected(promos[2]) }) {
             Text(
-                text = "Select Credit Card",
+                text = "Promo: ${promos[2].code}",
+                modifier = modifier
+            )
+        }
+
+        Spacer(modifier = modifier.padding(vertical = 20.dp))
+
+        Button(onClick = { onPromoRemoved() }) {
+            Text(
+                text = "Remove Selected Promo",
                 modifier = modifier
             )
         }
@@ -88,8 +112,6 @@ fun Greeting(
 @Composable
 fun GreetingPreview() {
     RideHailingMultiModulePocTheme {
-        Greeting("Android") {
-
-        }
+        Greeting(name = "Android", emptyList(), onPromoSelected = {}, onPromoRemoved = {})
     }
 }

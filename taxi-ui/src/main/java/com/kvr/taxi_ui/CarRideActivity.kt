@@ -1,6 +1,5 @@
 package com.kvr.taxi_ui
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,7 +29,11 @@ class CarRideActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Car Ride", onPaymentClick = this::openPaymentActivity)
+                    Greeting(
+                        "Car Ride",
+                        onPaymentClick = this::openPaymentActivity,
+                        onPromoClick = this::openPromoActivity
+                    )
                 }
             }
         }
@@ -41,10 +44,19 @@ class CarRideActivity : ComponentActivity() {
     private fun openPaymentActivity() {
         Navigator.openPaymentActivity(this)
     }
+
+    private fun openPromoActivity() {
+        Navigator.openPromoActivity(this)
+    }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier, onPaymentClick: () -> Unit) {
+fun Greeting(
+    name: String,
+    modifier: Modifier = Modifier,
+    onPaymentClick: () -> Unit,
+    onPromoClick: () -> Unit
+) {
     Column {
         Text(
             text = "Hello $name!",
@@ -53,7 +65,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier, onPaymentClick: () -> 
 
         Button(onClick = { onPaymentClick() }) {
             Text(
-                text = "Open Payment",
+                text = "Choose Payment",
+                modifier = modifier
+            )
+        }
+
+        Button(onClick = { onPromoClick() }) {
+            Text(
+                text = "Choose Promo",
                 modifier = modifier
             )
         }
@@ -64,8 +83,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier, onPaymentClick: () -> 
 @Composable
 fun GreetingPreview() {
     RideHailingMultiModulePocTheme {
-        Greeting("Android") {
-
-        }
+        Greeting(name = "Android", onPaymentClick = {}, onPromoClick = {})
     }
 }

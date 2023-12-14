@@ -1,21 +1,17 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.vanniktech.dependency.graph.generator")
 }
 
 android {
-    namespace = "com.kvr.ridehailingmultimodulepoc"
-    compileSdk = 34
+    namespace = "com.kvr.promo_ui"
+    compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.kvr.ridehailingmultimodulepoc"
         minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -52,11 +48,13 @@ android {
 
 dependencies {
 
-    implementation(project(mapOf("path" to ":taxi-ui")))
-    implementation(project(mapOf("path" to ":payment-ui")))
-    implementation(project(mapOf("path" to ":promo-ui")))
-
+    api(project(mapOf("path" to ":promo-data")))
     implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.10.0")
+
+    // Koin
+    implementation ("io.insert-koin:koin-android:3.4.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
@@ -64,9 +62,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-
-    // Koin
-    implementation ("io.insert-koin:koin-android:3.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

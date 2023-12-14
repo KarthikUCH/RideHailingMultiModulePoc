@@ -49,6 +49,7 @@ android {
 dependencies {
 
     implementation(project(mapOf("path" to ":payment-data")))
+    implementation(project(mapOf("path" to ":promo-data")))
     api(project(mapOf("path" to ":taxi-data")))
 
     implementation("androidx.core:core-ktx:1.9.0")
