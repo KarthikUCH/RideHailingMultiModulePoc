@@ -15,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kvr.navigation.Navigator
 import com.kvr.payment_data.PaymentListener
 import com.kvr.payment_data.PaymentListenerHolder
+import com.kvr.promo_data.PromoListener
+import com.kvr.promo_data.PromoListenerHolder
 import com.kvr.taxi_data.IBookingManager
 import com.kvr.taxi_ui.ui.theme.RideHailingMultiModulePocTheme
 import org.koin.android.ext.android.inject
@@ -49,6 +51,7 @@ class CarRideActivity : ComponentActivity() {
     }
 
     private fun openPromoActivity() {
+        PromoListenerHolder.setListener(bookingManager as PromoListener)
         Navigator.openPromoActivity(this)
     }
 }

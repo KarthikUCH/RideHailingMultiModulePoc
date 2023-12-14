@@ -17,13 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kvr.promo_data.PromoListener
+import com.kvr.promo_data.PromoListenerHolder
 import com.kvr.promo_data.data.IPromoRepository
 import com.kvr.promo_data.domain.Promo
 import com.kvr.promo_ui.ui.theme.RideHailingMultiModulePocTheme
 import org.koin.android.ext.android.inject
 
 class PromoActivity : ComponentActivity() {
-    private val promoListener: PromoListener by inject()
+    private val promoListener: PromoListener? = PromoListenerHolder.promoListener
     private val promoRepository: IPromoRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,18 +48,23 @@ class PromoActivity : ComponentActivity() {
     }
 
     private fun onPromoSelected(promo: Promo) {
-        promoListener.onPromoSelected(promo)
+        promoListener?.onPromoSelected(promo)
         displayToastMsg()
     }
 
     private fun onPromoRemoved() {
-        promoListener.onPromoRemoved()
+        promoListener?.onPromoRemoved()
         displayToastMsg()
     }
 
     private fun displayToastMsg() {
         Toast.makeText(this, "Check log to find the update in Booking Manager", Toast.LENGTH_LONG)
             .show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PromoListenerHolder.clearListener()
     }
 }
 
